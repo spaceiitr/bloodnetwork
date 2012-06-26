@@ -1,0 +1,350 @@
+body {
+margin : 0;
+padding : 0;
+background : #ffffff url(../images/blood_drop.png);
+font-family : Arial, Helvetica, sans-serif;
+font-size : 12px;
+color : #919191;
+}.welcome {	background-color:#DDFFDD;	border:1px solid #009900;	width:200px;}.welcome li{ 	list-style: none; }
+h1, h2, h3 {
+margin : 0;
+text-transform : uppercase;
+font-weight : normal;
+color : #549900;
+}
+h1 {
+font-size : 40px;
+}
+h2 {
+font-size : 18px;
+}
+p, ul, ol {
+margin-top : 0;
+line-height : 240%;
+text-align : justify;
+}
+a {
+color : #4999cb;
+}
+a:hover {
+text-decoration : none;
+}
+a img {
+border : none;
+}
+img.left {
+float : left;
+margin : 7px 30px 0 0;
+}
+img.right {
+float : right;
+margin : 7px 0 0 30px;
+}
+hr {
+display : none;
+}
+.list1 li {
+float : left;
+line-height : normal;
+}
+.list1 li img {
+margin : 0 30px 30px 0;
+}
+.list1 li.alt img {
+margin-right : 0;
+}
+/*#header {
+width : 920px;
+height : 40px;
+margin : 0 auto;
+background : url(images/img02.jpg) no-repeat left top;
+}
+#menu {
+float : left;
+width : 600px;
+height : 40px;
+}
+#menu ul {
+margin : 0;
+padding : 5px 0 0 5px;
+list-style : none;
+line-height : normal;
+}
+#menu li {
+display : block;
+float : left;
+}
+#menu a {
+display : block;
+float : left;
+height : 32px;
+padding : 10px 20px 0 20px;
+letter-spacing : 0;
+text-decoration : none;
+text-align : center;
+text-transform : none;
+font-family : minionpro;
+font-size : 15px;
+font-weight : bold;
+color : #ffffff;
+}
+#menu a:hover {
+text-decoration : none;
+color : #333;
+}*/
+.menu{
+	border:none;
+	border:0px;
+	margin:0px;
+	padding-left: 30px;
+	font: 67.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+	font-size:14px;
+	font-weight:bold;
+	}
+.menu ul{
+	background:#c00;
+	height:35px;
+	width: 700px;
+	list-style:none;
+	margin:0;
+	padding:0;
+	}
+	.menu li{
+		float:left;
+		padding:0px;
+		}
+	.menu li a{
+		background:#c00 ;
+		color:#ffffff;
+		display:block;
+		font-weight:normal;
+		line-height:35px;
+		margin:0px;
+		padding:0px 25px;
+		text-align:center;
+		text-decoration:none;
+		}
+		.menu li a:hover, .menu ul li:hover a{
+			background: #333 ;
+			color:#FFFFFF;
+			text-decoration:none;
+			}
+	.menu li ul{
+		background:#333;
+		display:none;
+		height:auto;
+		padding:0px;
+		margin:0px;
+		border:0px;
+		position:absolute;
+		width:225px;
+		
+		/*top:1em;
+		/*left:0;*/
+		}
+	.menu li:hover ul{
+		display:block;
+		
+		}
+	.menu li li {
+		/*background:url('images/sub_sep.gif') bottom left no-repeat;*/
+		display:block;
+		float:none;
+		margin:0px;
+		padding:0px;
+		width:225px;
+		}
+	.menu li:hover li a{
+		background:none;
+		
+		
+		}
+	.menu li ul a{
+		display:block;
+		height:35px;
+		font-size:12px;
+		font-style:normal;
+		margin:0px;
+		padding:0px 10px 0px 15px;
+		text-align:left;
+		}
+		.menu li ul a:hover, .menu li ul li:hover a{
+			background:#c00 ;
+			border:0px;
+			color:#ffffff;
+			text-decoration:none;
+			}
+	.menu p{
+		clear:left;
+		}	
+
+		
+/*#search {
+float : right;
+padding : 10px 10px 0 0;
+}
+#search form {
+float : right;
+margin : 0;
+padding : 10px 0 0 0;
+}
+#search fieldset {
+margin : 0;
+padding : 0;
+border : none;
+}
+#search input {
+float : left;
+font : 12px Arial, Helvetica, sans-serif;
+}
+#search-text {
+width : 170px;
+margin-top : 8px;
+margin-left : 60px;
+margin-right : 40px;
+padding : 0 0 0 7px;
+border : none;
+background : none;
+font-family : Arial, Helvetica, sans-serif;
+color : #000;
+}
+#search-submit {
+width : 82px;
+height : 28px;
+margin-left : 10px;
+padding : 0 5px;
+background : url(images/img03.jpg) no-repeat left top;
+border : none;
+text-indent : -9999px;
+color : #ffffff;
+}*/
+#page {
+width : 950px;
+margin : 0 auto;
+padding : 10px 0 0 30px;
+background : #fff;
+}
+#logo {
+width : 920px;
+height : 190px;
+margin : 0 auto;
+padding-top : 10px;
+padding-left : 1px;
+}
+#logo h1, #logo p {
+float : left;
+margin : 0;
+line-height : normal;
+text-transform : none;
+font-weight : normal;
+color : #000000;
+
+}
+#logo p {
+float : right;
+padding : 0px 0 0 100px;
+text-transform : none;
+font-family:Verdana, Geneva, sans-serif;
+font-size : 10px;
+color : #000000;
+letter-spacing : 1px;
+}
+#logo h1 {
+letter-spacing : -1px;
+font-size : 25px;
+font-weight:bold;
+font-family:Georgia, "Times New Roman", Times, serif;
+}
+#logo a {
+text-decoration : none;
+color : #000000;
+}
+#banner {
+padding-bottom : 20px;
+}
+#content {
+float : left;
+width : 700px;
+}
+.post {
+margin-bottom : 10px;
+padding-bottom : 10px;
+background : #ffffff ;
+font-weight:bold;
+line-height: 1.7em;
+}
+.post .title {
+padding : 4px 20px 0 10px;
+height : 40px;
+background : #c00;
+color : #fff;
+}
+.post .title a {
+text-decoration : none;
+text-transform : uppercase;
+font-size : 14px;
+color : #fff;
+}
+.post .date {
+display : inline-block;
+margin : 0;
+padding : 0 10px;
+color : #ffffff;
+}
+.post .meta {
+margin-left : 1px;
+padding : 1px 20px 0 1px;
+font-family : Arial, Helvetica, sans-serif;
+font-weight : bold;
+font-size : 12px;
+color : #000;
+
+}
+.post .meta span {
+margin : 0;
+}
+.post .meta a {
+padding : 8px 10px 5px 10px;
+text-decoration : none;
+color : #ffffff;
+}
+.post .entry {
+padding : 10px 10px 10px 15px;
+color : #000;
+}
+.post .links {
+display : block;
+width : 100px;
+height : 25px;
+margin : 0;
+padding : 10px 0 0 20px;
+background : #161616 url(images/img10.jpg) no-repeat right top;
+text-decoration : none;
+font-family : Arial, Helvetica, sans-serif;
+font-size : 11px;
+text-decoration : none;
+font-weight : bold;
+color : #ffffff;
+}
+.post .comments {
+display : block;
+width : 120px;
+height : 18px;
+margin : 0;
+padding : 3px 0 0 20px;
+background : #90bf35;
+
+text-decoration : none;
+font-family : Arial, Helvetica, sans-serif;
+font-size : 11px;
+text-decoration : none;
+font-weight : bold;
+color : #ffffff;
+}
+#sidebar {
+
+width: 260px;
+
+
+
+}

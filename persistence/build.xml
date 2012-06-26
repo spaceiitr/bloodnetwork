@@ -1,0 +1,107 @@
+<project name="Persistence" basedir="." default="">
+	<property name="persistence.jar" value="dist/persistence.jar" />
+	<property name="hcmmodel.project.dir" value="..\..\Model" />
+	<import file="../build-util.xml"/>
+
+	<target name="domainSchemaExport" depends="generateDomainBaseEntities" description="Creates a database schema from the hibernate mapping files and import Notification and Coaching topic data to database">
+			<taskdef name="schemaexport" classname="com.authoria.tools.AuthoriaSchemaExportTask" classpathref="tools.classpath" description="Generates the create table schema from the set of hbm.xml files." />
+			<schemaexport properties="src/hibernate.tools.properties" quiet="no" text="no" drop="no" delimiter=";" output="persistence/conf/schema/domain-schema-export.sql">
+				<fileset dir="conf/deploy/hibernate/mapping/domain">
+					<include name="**/*.hbm.xml" />
+					<exclude name="**/*queries.hbm.xml" />
+				</fileset>
+			</schemaexport>
+		<antcall target="domainSchemaExport_addSampleUsers" />
+		</target>
+	
+	<target name="domainSchemaExport_addSampleUsers" description="Runs the domain-addSampleUsers.sql files">
+		<antcall target="importSqlFileINTERNAL">
+			<param name="importSqlFileINTERNAL.file" value="conf/schema/domain-addSampleUsers.sql"/>
+		</antcall>
+	</target>
+	
+	<target name="importSqlFileINTERNAL">
+		<available file="${importSqlFileINTERNAL.file}" property="sqlFileExists"/>
+		<fail unless="sqlFileExists">
+			The specified sql file [${importSqlFileINTERNAL.file}] does not exist.
+		</fail>
+		<property file="src/hibernate.tools.properties"/>
+		<property name="importSqlFileINTERNAL.onerror" value="abort"/>
+		<property name="importSqlFileINTERNAL.delimiter" value=";"/>
+		<property name="importSqlFileINTERNAL.delimitertype" value="normal"/>
+		<property name="importSqlFileINTERNAL.keepformat" value="false"/>
+		<sql encoding="UTF-8" onerror="${importSqlFileINTERNAL.onerror}" driver="${hibernate.connection.driver_class}" url="${hibernate.connection.url}" userid="${hibernate.connection.username}" password="${hibernate.connection.password}" src="${importSqlFileINTERNAL.file}" delimiter="${importSqlFileINTERNAL.delimiter}" delimitertype="${importSqlFileINTERNAL.delimitertype}" keepformat="${importSqlFileINTERNAL.keepformat}">
+			<classpath>
+				<path refid="tools.classpath" />
+			</classpath>
+		</sql>
+	</target>
+	<!-- ============================================================== -->
+		<!-- systemutil layer targets tasks 						     	-->
+		<!-- ============================================================== -->
+		<target name="Build" description="builds the persistence layer">
+			<antcall target="baseCompile">
+		     	<param name="binDir" value="${build.dir}/src"/>
+		       	<param name="srcDir" value="src"/>
+		       	<param name="classpathID" value="persistence.classpath"/>
+		     </antcall>
+		</target>
+
+		<target name="Dist" depends="Build, makeDistDir" description="builds and jars the systemutil layer">
+			<jar destfile="${persistence.jar}" basedir="${build.dir}/src">
+				<zipfileset file="conf/deploy/hibernate/hibernate.cfg.xml" />
+				<zipfileset dir="conf/deploy/hibernate/mapping" excludes="**/.svn/**,**/_svn/**" />
+			</jar>
+		</target>
+		
+		<path id="persistence.classpath">
+			<fileset dir="../lib/deploy" includes="*.jar" />
+			<fileset dir="../${business.dir}/dist">
+				<include name="*.jar" />
+			</fileset>
+	  	</path>
+		
+		<target name="makeDistDir" >
+			<mkdir dir="dist" />
+		</target>
+	
+	<target name="generateDomainBaseEntities" description="Creates the base entity pojos from mapping files">
+			<delete>
+				<fileset dir="src/com/authoria/domain/entity" includes="Base*.java" />
+			</delete>
+			<echo message="Done deleting Domain Base* files" />
+			<taskdef name="hbm2java" classname="net.sf.hibernate.tool.hbm2java.Hbm2JavaTask">
+				<classpath>
+					<path refid="tools.classpath" />
+				</classpath>
+			</taskdef>
+			<hbm2java config="baseEntityGenConfig.xml" output="src">
+				<fileset dir="conf/deploy/hibernate/mapping">
+					<include name="domain/*.hbm.xml" />
+				</fileset>
+			</hbm2java>
+			<echo message="Done generating base files" />
+		</target>
+	
+	<path id="tools.classpath">
+			<fileset dir="../lib/devTools" includes="*.jar" />
+			<fileset dir="../lib/deploy" includes="*.jar" />
+			<fileset dir="../buildtools/dist" includes="*.jar" />
+			<fileset dir="../systemUtils/dist" includes="*.jar" />
+		</path>
+	
+	<target name="getHcmModel">
+			<echo> Copying Code Review Hbm files to newarch </echo>
+			<delete>
+				<fileset dir="conf/deploy/hibernate/mapping/domain" includes="**/*.hbm.xml" excludes="*queries.hbm.xml">
+					<present present="srconly" targetdir="${hcmmodel.project.dir}/output" />
+				</fileset>
+			</delete>
+			<copy todir="conf/deploy/hibernate/mapping/domain">
+				<fileset dir="${hcmmodel.project.dir}/output" includes="**/CR*.hbm.xml" excludes="*queries.hbm.xml">
+					<different targetdir="conf/deploy/hibernate/mapping/domain" ignoreFileTimes="true"/>
+				</fileset>
+			</copy>
+		</target>
+	
+</project>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<include file="app-core-struts.xml" />
+	<package name="app" extends="app-core">
+		<action name="Hello" class="com.app.bloodnetwork.action.HelloAction">
+			<result name="success">index.jsp</result>
+		</action>
+		<action name="Redirect" class="com.app.bloodnetwork.action.IndexAction">
+			<result name="input" type="redirect">UpdateProfile?fbId=${fbId}</result>
+			<result name="search" type="redirect">FindDonors</result>
+		</action>
+		<action name="UpdateProfile" class="com.app.bloodnetwork.action.UpdateProfileAction">
+			<result name="input">updateProfile.jsp</result>
+			<result name="success">updateProfile.jsp</result>
+		</action>
+		
+		<action name="FindDonors" class="com.app.bloodnetwork.action.FindDonorsAction">
+			<result name="success">findDonor.jsp</result>
+			<result name="refresh">donorTable.jsp</result>
+		</action>
+		
+		<action name="Initialize" class="com.app.bloodnetwork.action.InitializeAction">
+			<interceptor-ref name="unsecuredStack" />
+		</action>
+		
+		<action name="Test" class="com.app.bloodnetwork.action.TestAction">
+		</action>
+		
+	</package>
+</struts>

@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<project name="Presentation" basedir=".">
+	<import file="../build-util.xml"/>
+	<property name="presentation.jar" value="dist/presentation.jar"/>
+<!-- deploy struts.xml file -->
+	<target name="DistStrutsXml">
+		<copy todir="${build.dir}/src" overwrite="true" >
+			<fileset file="conf/deploy/struts/*.xml" />
+			<!--<fileset file="conf/deploy/freemarker/freemarker.properties" />
+			<fileset file="conf/deploy/struts/xwork-conversion.properties" />
+			<fileset file="conf/deploy/log4j/log4j.properties" />
+			<fileset file="conf/deploy/properties/codereview.properties" /> -->
+		</copy>
+	</target>
+	
+	<target name="Build" description="builds the presentation layer">
+		<antcall target="baseCompile">
+	     	<param name="binDir" value="${build.dir}/src"/>
+	       	<param name="srcDir" value="src"/>
+	       	<param name="classpathID" value="presentation.classpath"/>
+	     </antcall>
+	</target>
+	    
+	<target name="systemUtilDist" >
+			<ant dir="../${systemUtil.dir}" target="Dist" />
+		</target>
+	
+	<target name="Dist" depends="Build,DistStrutsXml" description="builds and jars the presentation layer">
+		<mkdir dir="dist" />
+		<copy todir="${build.dir}/src">
+			<fileset dir="src" includes="**/*-conversion.properties"/>
+		</copy>
+		<zip destfile="${presentation.jar}" basedir="${build.dir}/src">
+			<zipfileset dir="src" excludes="**/.svn/**,**/_svn/**">
+				<include name="**/*validation.xml" />
+			</zipfileset>
+		</zip>
+	</target>
+	
+	<path id="presentation.classpath">
+			<fileset dir="../lib/deploy">
+				<include name="*.jar" />
+			</fileset>
+		
+		<fileset dir="../${persistence.dir}/dist">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="../${business.dir}/dist">
+			<include name="*.jar" />
+		</fileset>
+	  	</path>
+</project>

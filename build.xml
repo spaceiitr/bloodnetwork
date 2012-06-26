@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="BigEye" basedir=".">
+	<property file="build.properties" />
+	<import file="build-util.xml"/>
+	<property name="webapp.name" value="BigEye" />
+	<property name="deploy.path" value="${tomcat.home}/webapps" />
+	
+	
+	
+	<target name="webappLocalDeploy" depends="webappLocalUndeploy,webappWar" description="makes and deploys the war file to the localhost">
+		<property name="webappLocalDeploy.webapp.name" value="${webapp.name}"/>
+		<!-- For some reason, this delete doesnt always work on Windows, so dont fail build just because Windows
+			won't let go of the dir.
+		-->
+		
+		<!-- We found the undeploy magic on Windows; so, just copy the .war file
+		<delete dir="${deploy.path}/${webapp.name}" failonerror="false" />
+	    <unwar src="dist/${webapp.name}.war" dest="${deploy.path}/${webapp.name}" /> 
+	    -->
+		<copy file="dist/${webappLocalDeploy.webapp.name}.war" tofile="${deploy.path}/${webappLocalDeploy.webapp.name}.war" />
+		<antcall target="tomcat-start"></antcall>
+	</target>
+	
+	<target name="webappLocalUndeploy" depends="tomcat-stop" description="undeploys the war file from localhost" >
+			<property name="webappLocalUndeploy.webapp.name" value="${webapp.name}"/>
+			<delete file="${deploy.path}/${webappLocalUndeploy.webapp.name}.war" />
+			<delete dir="${deploy.path}/${webappLocalUndeploy.webapp.name}" />
+		</target>
+	
+	
+	<target name="webappUpdateUI" depends="" description="makes and deploys the war file to the localhost">
+			<property name="webappLocalDeploy.webapp.name" value="${webapp.name}"/>
+			<!-- For some reason, this delete doesn't always work on Windows, so don't fail build just because Windows
+				won't let go of the dir...
+				-->
+			<!-- We found the undeploy magic on Windows; so, just copy the .war file
+			<delete dir="${deploy.path}/${webapp.name}" failonerror="false" />
+		    <unwar src="dist/${webapp.name}.war" dest="${deploy.path}/${webapp.name}" /> 
+		    -->
+			<copy todir="${deploy.path}/${webappLocalDeploy.webapp.name}" overwrite="true" >
+				<fileset file="presentation/src/page/jsp/*.*" />
+			</copy>
+		<!--	<copy todir="${deploy.path}/${webappLocalDeploy.webapp.name}" overwrite="true" >
+				<fileset dir="presentation/src/page/freemarker" />
+			</copy> -->
+			<copy todir="${deploy.path}/${webappLocalDeploy.webapp.name}" overwrite="true" >
+						<fileset dir="presentation/src/page/lib" />
+			</copy>
+			<copy todir="${deploy.path}/${webappLocalDeploy.webapp.name}/js" overwrite="true" >
+				<fileset file="presentation/src/page/js/*.*" />
+			</copy>
+			<copy todir="${deploy.path}/${webappLocalDeploy.webapp.name}/css" overwrite="true" >
+				<fileset file="presentation/src/page/css/*.*" />
+			</copy>	
+		<!--	<copy todir="${deploy.path}/${webappLocalDeploy.webapp.name}/deploy" overwrite="true" >
+						<fileset file="presentation/src/page/deploy/*.*" /> 
+			</copy>	-->
+			<copy todir="${deploy.path}/${webappLocalDeploy.webapp.name}/images" overwrite="true" >
+				<fileset file="presentation/src/page/images/*.*" />
+			</copy>	
+		<!--	<copy todir="${deploy.path}/${webappLocalDeploy.webapp.name}/html" overwrite="true" >
+				<fileset file="presentation/src/page/html/*.*" />
+			</copy> -->	
+		</target>
+	
+	<target name="webappWar" depends="webappWarBase">
+
+			<antcall target="createWebXml">
+				<param name="webXmlFile" value="${presentation.dir}/conf/deploy/tomcat/web.xml"/>
+			</antcall>
+			<delete file="dist/${webapp.name}.war" failonerror="false" />
+			<war destfile="dist/${webapp.name}.war" webxml="build/tmp/web.xml" duplicate="fail">
+				<!-- add all the base files -->
+				<zipfileset src="build/tmp/war.zip"/>
+			</war>
+			<!-- uncomment this when the Java hook for upgrade is enabled -->
+			<!-- <copy file="build/tmp/upgrade.zip" tofile="dist/upgrade.zip" /> -->
+		</target>
+	
+	<target name="webappWarBase" depends="businessDist, persistenceDist, presentationDist, webappCreateDirs">
+			<delete file="build/tmp/war.zip"/>
+			<zip destfile="build/tmp/war.zip">
+
+				<!-- add all this project's 3rd-party jars to lib directory -->
+				<zipfileset dir="lib/deploy" prefix="WEB-INF/lib" includes="*.jar" />
+
+				<!-- copy our application jars to the lib directory -->
+				<zipfileset dir="${presentation.dir}/dist" prefix="WEB-INF/lib" includes="*.jar" excludes="*Test.jar"/>
+				<zipfileset dir="${persistence.dir}/dist" prefix="WEB-INF/lib" includes="*.jar" excludes="*Test.jar"/>
+				<zipfileset dir="${business.dir}/dist" prefix="WEB-INF/lib" includes="*.jar" excludes="*Test.jar"/>
+
+				<!-- copy the web page stuff -->
+				<zipfileset dir="${presentation.dir}/src/page/lib" prefix="lib" excludes="**/.svn/**,**/_svn/**"/>
+				<zipfileset dir="${presentation.dir}/src/page/css" prefix="css" excludes="**/.svn/**,**/_svn/**"/>
+				<zipfileset dir="${presentation.dir}/src/page/images" prefix="images" excludes="**/.svn/**,**/_svn/**"/>
+				<zipfileset dir="${presentation.dir}/src/page/js" prefix="js" excludes="**/.svn/**,**/_svn/**"/>
+				<zipfileset dir="${presentation.dir}/src/page/jsp" excludes="**/.svn/**,**/_svn/**" />
+				<!--<zipfileset dir="${presentation.dir}/src/page/freemarker" excludes="**/.svn/**,**/_svn/**" />-->
+				
+			</zip>
+			
+		</target>
+	<!-- ================================= 
+	          target: tomcat-start               
+	         ================================= -->
+		<target name="tomcat-start">
+			<exec executable="net">
+				<arg value="start"/>
+				<arg value="Tomcat7"/>
+			</exec>
+		</target>
+		
+		<!-- ================================= 
+		          target: tomcat-stop               
+		     ================================= -->
+		<target name="tomcat-stop">
+			<exec executable="net">
+				<arg value="stop"/>
+				<arg value="Tomcat7"/>
+			</exec>
+		</target>
+	
+	<target name="webappCreateDirs" >
+			<mkdir dir="dist" />
+			<mkdir dir="build/tmp" />
+		</target>
+	
+	<!-- description="builds and jars the presentation layer" -->
+	<target name="presentationDist">
+		<ant dir="${presentation.dir}" target="Dist" />
+	</target>
+	
+	<target name="createWebXml">
+		<property name="createWebXml.webapp.name" value="${webapp.name}" />
+		<!-- setup web.xml -->
+		<copy file="${webXmlFile}" tofile="build/tmp/web.xml" overwrite="true">
+			<filterset>
+				<filter token="webapp.name" value="${createWebXml.webapp.name}"/>
+			</filterset>
+		</copy>
+	</target>
+	
+	
+	
+	
+	<target name="persistenceDist" >
+			<ant dir="${persistence.dir}" target="Dist" />
+		</target>
+	
+	<target name="businessDist" >
+				<ant dir="${business.dir}" target="Dist" />
+			</target>
+	
+	<target name="copyCRModel" description="copies the .hbm.xml fils from the Model project" >
+			<ant dir="${persistence.dir}" target="getHcmModel" />
+		</target>
+
+	<target name="addEntity" depends="mappingFileCheck" description="Creates all the stuff to put a new entity into the system">
+
+			<!-- create the base abstract entity, although it would be created on the next persistenceEntityGenRC run -->
+			<antcall target="generateBaseEntity"/>
+
+			<!-- generate a concrete entity class -->
+			<antcall target="generateDerivedEntity"/>
+
+			<!-- generate a set of files for a default dao -->
+			<antcall target="generateDaoFiles"/>
+		</target>
+	
+	<target name="mappingFileCheck" unless="mappingFile">
+			<fail message="You must specify the parameter 'mappingFile' to point to your hbm file." />
+		</target>
+	
+	<path id="tools.classpath">
+				<fileset dir="lib/devTools" includes="*.jar" />
+				<fileset dir="lib/deploy" includes="*.jar" />
+				<fileset dir="buildtools/dist" includes="*.jar" />
+			</path>
+	
+	<target name="generateBaseEntity" >
+				<taskdef name="hbm2java" classname="net.sf.hibernate.tool.hbm2java.Hbm2JavaTask" >
+					<classpath>
+						<path refid="tools.classpath"/>
+					</classpath>
+				</taskdef>
+
+				<!-- create the base abstract entity, although it would be created on the next persistenceEntityGenRC run -->
+				<hbm2java config="persistence/baseEntityGenConfig.xml"	output="${persistence.dir}/src">
+					<fileset file="${mappingFile}"/>
+				</hbm2java>
+			</target>
+		
+		<target name="generateDerivedEntity">
+				<path id="entity.tools.classpath">
+					<path refid="tools.classpath"/>
+					<pathelement location="buildtools/conf/entitygen"/>
+				</path>
+				<taskdef name="hbm2java" classname="net.sf.hibernate.tool.hbm2java.Hbm2JavaTask" classpathref="entity.tools.classpath" />
+				<hbm2java config="buildtools/conf/entitygen/customEntityConfig.xml"	output="${persistence.dir}/src">
+					<fileset file="${mappingFile}"/>
+				</hbm2java>
+			</target>
+		
+		<target name="generateDaoFiles">
+				<property file="buildTools/conf/daogen/daoGen.properties" />
+				<java classname="com.authoria.tools.daogen.DaoGeneratorMain" classpathref="tools.classpath" >
+					<arg value="${mappingFile}"/>
+					<arg value="${daoGen.outputDir}"/>
+					<arg value="${daoGen.srcDir}"/>
+					<arg value="${daoGen.testDir}"/>
+					<arg value="${daoGen.interfaceTemplate}"/>
+					<arg value="${daoGen.implementationTemplate}"/>
+					<arg value="${daoGen.mockTemplate}"/>
+					<arg value="${daoGen.unitTestTemplate}"/>
+				</java>
+			</target>	
+	</project>

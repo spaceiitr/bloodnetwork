@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+
+<project name="Business" basedir=".">
+	<import file="../build-util.xml"/>
+	<property name="business.jar" value="dist/business.jar"/>
+	
+	<!-- ============================================================== -->
+	<!-- systemutil layer targets tasks 						     	-->
+	<!-- ============================================================== -->
+	<target name="Build" description="builds the business layer">
+		<antcall target="baseCompile">
+	     	<param name="binDir" value="${build.dir}/src"/>
+	       	<param name="srcDir" value="src"/>
+	       	<param name="classpathID" value="business.classpath"/>
+	     </antcall>
+	</target>
+
+	<target name="Dist" depends="Build, makeDistDir" description="builds and jars the business layer">
+		<jar destfile="${business.jar}" basedir="${build.dir}/src"/>
+	</target>
+	
+	<path id="business.classpath">
+		<fileset dir="../lib/deploy" includes="*.jar" />
+	<fileset dir="../${persistence.dir}/dist">
+		<include name="*.jar" />
+	</fileset>
+  	</path>
+	
+	<target name="makeDistDir" >
+		<mkdir dir="dist" />
+	</target>
+</project>

@@ -1,0 +1,31 @@
+<project name="include" basedir=".">
+
+<property name="presentation.dir" value="presentation" />
+<property name="systemUtil.dir" value="systemUtils" />
+<property name="buildTools.dir" value="buildtools" />
+<property name="persistence.dir" value="persistence" />
+<property name="business.dir" value="business" />
+<property name="systemutil.dir" value="systemUtils" />
+<property name="build.dir" value="build" />
+
+<!-- ============================================================== -->
+	<!-- Default compilation task 										-->
+	<!-- Parameters:                                                    -->
+	<!-- binDir: directory to output .class files into                  -->
+	<!-- srcDir: directory of java source files to compile              -->
+	<!-- classpathID:  refID of classpath to use                        -->
+	<!-- ============================================================== -->
+	<target name="baseCompile">
+	<echo message="java.home = ${java.home}" />
+		<mkdir dir="${binDir}"/>
+		<!-- fork=true is required for correct operation on Windows in ant 1.6 -->
+		<javac destdir="${binDir}" memoryInitialSize="256m" memoryMaximumSize="512m" debug="true" debuglevel="lines,vars,source">
+			<!--<compilerarg value="-Xlint:unchecked"/> -->
+			<!--<compilerarg value="-Xlint:serial"/> -->
+			<compilerarg value="-g"/>
+			<src path="${srcDir}"/>
+			<classpath refid="${classpathID}"/>
+		</javac>
+   	</target>
+   	
+</project>
