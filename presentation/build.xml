@@ -8,9 +8,9 @@
 		<copy todir="${build.dir}/src" overwrite="true" >
 			<fileset file="conf/deploy/struts/*.xml" />
 			<!--<fileset file="conf/deploy/freemarker/freemarker.properties" />
-			<fileset file="conf/deploy/struts/xwork-conversion.properties" />
+			<fileset file="conf/deploy/struts/xwork-conversion.properties" />-->
 			<fileset file="conf/deploy/log4j/log4j.properties" />
-			<fileset file="conf/deploy/properties/codereview.properties" /> -->
+			<fileset file="conf/deploy/properties/bloodnetwork.properties" /> 
 		</copy>
 	</target>
 	

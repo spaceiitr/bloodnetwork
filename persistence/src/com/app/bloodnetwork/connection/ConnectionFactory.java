@@ -4,16 +4,22 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.app.loader.PropertyFileLoader;
+
 public class ConnectionFactory {
 
-	String driverClassName = "com.mysql.jdbc.Driver";
-	String connectionUrl = "jdbc:mysql://localhost:3306/bloodnetwork";
-	String dbUser = "sysman";
-	String dbPwd = "sysman";
+	private final String driverClassName ;
+	private final String connectionUrl ;
+	private final String dbUser;
+	private final String dbPwd ;
 
 	private static ConnectionFactory connectionFactory = null;
 
 	private ConnectionFactory() {
+		driverClassName = PropertyFileLoader.getProperty("db.driver.name");
+		connectionUrl = PropertyFileLoader.getProperty("db.connection.url");
+		dbUser = PropertyFileLoader.getProperty("db.user");
+		dbPwd = PropertyFileLoader.getProperty("db.passworrd");
 		try {
 			Class.forName(driverClassName);
 		} catch (ClassNotFoundException e) {

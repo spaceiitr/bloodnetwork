@@ -16,6 +16,11 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 	
+	<listener>
+        <listener-class>com.app.bloodnetwork.listener.PropertyLoaderListener</listener-class>
+	</listener>
+	
+	
 	<error-page>
   		<error-code>404</error-code>
   		<location>/html/404.html</location>

@@ -1,4 +1,5 @@
 <%@ taglib prefix="s" uri="/struts-tags" %>
+<link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
 <script src="http://connect.facebook.net/en_US/all.js"></script>
 
 	<script>
@@ -24,21 +25,21 @@
 	</script>
 <div class="menu">
 		<ul>
-			<li><a href="About Us.php">About Us</a>
+			<li><a href="aboutUs.jsp">About Us</a>
 				<ul>
-				 <li><a href="How does blood network work.php"> How does Blood Network works?</a></li>
+				 <li><a href="aboutUsMenu1.jsp"> How does Blood Network works?</a></li>
 				</ul>
 			</li>
 			
 			<li><a href="UpdateProfile?<s:property value='fbId'/>" >Update Profile</a></li>
 			</li>
 
-			<li><a href="FAQ.php">FAQ</a>
+			<li><a href="faq.jsp">FAQ</a>
 				<ul>
-					<li><a href="blooddonationcriteria.php">Blood Donation Criteria</a></li>
-					<li><a href="Tips On Blood Donation.php">Tips on Blood Donation</a></li>
-					<li><a href="Do not Donate Blood If.php">Do not Donate Blood If</a></li>
-					<li><a href="Misconceptions.php">Misconceptions</a></li>
+					<li><a href="faq1.jsp">Blood Donation Criteria</a></li>
+					<li><a href="faq2.jsp">Tips on Blood Donation</a></li>
+					<li><a href="faq3.jsp">Do not Donate Blood If</a></li>
+					<li><a href="faq4.jsp">Misconceptions</a></li>
 				</ul>
 			</li>
 			
